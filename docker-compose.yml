@@ -1,0 +1,16 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+  db:
+    image: postgres:alpine
+    container_name: "chronos-db"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 54321
+      POSTGRES_USER: buddy
+      POSTGRES_DB: chronos_db
+    volumes:
+      - "./data/postgres:/var/lib/postgresql/data"
+    ports:
+      - 5432:5432
