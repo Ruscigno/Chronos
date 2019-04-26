@@ -54,18 +54,16 @@ public class EmployeeController {
 		Response<EmployeeDto> response = new Response<EmployeeDto>();
 
 		Optional<Employee> employee = this.employeeService.buscarPorId(id);
-		if (!employee.isPresent()) {
+		if (employee.isEmpty()) {
 			result.addError(new ObjectError("funcionario", "Funcionário não encontrado."));
 		}
-
-		this.atualizarDadosFuncionario(employee.get(), employeeDto, result);
-
+		
 		if (result.hasErrors()) {
 			log.error("Erro validando funcionário: {}", result.getAllErrors());
 			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
 			return ResponseEntity.badRequest().body(response);
 		}
-
+		this.atualizarDadosFuncionario(employee.get(), employeeDto, result);
 		this.employeeService.persistir(employee.get());
 		response.setData(this.converterFuncionarioDto(employee.get()));
 
