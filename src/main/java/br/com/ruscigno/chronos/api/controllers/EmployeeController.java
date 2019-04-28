@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -67,6 +68,28 @@ public class EmployeeController {
 		this.employeeService.persistir(employee.get());
 		response.setData(this.converterFuncionarioDto(employee.get()));
 
+		return ResponseEntity.ok(response);
+	}
+
+	/**
+	 * Retorna um employee dado um CPF.
+	 * 
+	 * @param cnpj
+	 * @return ResponseEntity<Response<EmployeeDto>>
+	 */
+	@GetMapping(value = "/cpf/{cpf}")
+	public ResponseEntity<Response<EmployeeDto>> buscarPorCpf(@PathVariable("cpf") String cpf) {
+		log.info("Buscando employee por CPF: {}", cpf);
+		Response<EmployeeDto> response = new Response<EmployeeDto>();
+		Optional<Employee> employee = employeeService.buscarPorCpf(cpf);
+
+		if (!employee.isPresent()) {
+			log.info("Employee não encontrado para o CPF: {}", cpf);
+			response.getErrors().add("Employee não encontrado para o CPF " + cpf);
+			return ResponseEntity.badRequest().body(response);
+		}
+
+		response.setData(this.converterFuncionarioDto(employee.get()));
 		return ResponseEntity.ok(response);
 	}
 
