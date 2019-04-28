@@ -39,6 +39,10 @@ Default authentication. Send a post request to /auth
 }
 ```
 
+## Swagger UI
+
+/swagger-ui.html
+
 ## Authors
 
 * **Sander Ruscigno** - [ruscigno.com.br](https://www.ruscigno.com.br)
