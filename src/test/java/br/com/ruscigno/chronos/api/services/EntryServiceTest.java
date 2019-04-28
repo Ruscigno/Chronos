@@ -39,8 +39,9 @@ public class EntryServiceTest {
 		BDDMockito
 				.given(this.entryRepository.findByFuncionarioId(Mockito.anyLong(), Mockito.any(PageRequest.class)))
 				.willReturn(new PageImpl<Entry>(new ArrayList<Entry>()));
-//		BDDMockito.given(this.lancamentoRepository.findOne(Mockito.anyLong())).willReturn(new Entry());
 		BDDMockito.given(this.entryRepository.save(Mockito.any(Entry.class))).willReturn(new Entry());
+
+		BDDMockito.given(this.entryRepository.findById(Mockito.anyLong())).willReturn(Optional.of(new Entry()));;
 	}
 
 	@Test
@@ -50,12 +51,12 @@ public class EntryServiceTest {
 		assertNotNull(entry);
 	}
 
-//	@Test
-//	public void testBuscarLancamentoPorId() {
-//		Optional<Entry> lancamento = this.lancamentoService.buscarPorId(1L);
-//
-//		assertTrue(lancamento.isPresent());
-//	}
+	@Test
+	public void testBuscarLancamentoPorId() {
+		Optional<Entry> lancamento = this.entryService.buscarPorId(1L);
+
+		assertTrue(lancamento.isPresent());
+	}
 
 	@Test
 	public void testPersistirLancamento() {

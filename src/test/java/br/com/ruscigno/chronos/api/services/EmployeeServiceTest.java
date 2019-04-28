@@ -33,9 +33,9 @@ public class EmployeeServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		BDDMockito.given(this.employeeRepository.save(Mockito.any(Employee.class))).willReturn(new Employee());
-//		BDDMockito.given(this.funcionarioRepository.findById(Mockito.anyLong())).willReturn(new Employee());
 		BDDMockito.given(this.employeeRepository.findByEmail(Mockito.anyString())).willReturn(new Employee());
 		BDDMockito.given(this.employeeRepository.findByCpf(Mockito.anyString())).willReturn(new Employee());
+		BDDMockito.given(this.employeeRepository.findById(Mockito.anyLong())).willReturn(Optional.of(new Employee()));;
 	}
 
 	@Test
@@ -45,12 +45,12 @@ public class EmployeeServiceTest {
 		assertNotNull(employee);
 	}
 
-//	@Test
-//	public void testBuscarFuncionarioPorId() {
-//		Optional<Employee> funcionario = this.funcionarioService.buscarPorId(1L);
-//
-//		assertTrue(funcionario.isPresent());
-//	}
+	@Test
+	public void testBuscarFuncionarioPorId() {
+		Optional<Employee> funcionario = this.employeeService.buscarPorId(1L);
+
+		assertTrue(funcionario.isPresent());
+	}
 
 	@Test
 	public void testBuscarFuncionarioPorEmail() {
