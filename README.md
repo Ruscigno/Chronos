@@ -5,15 +5,15 @@ RESTfull API to show the power of Java and Spring Boot. Basically you can regist
 ## Features
 
 * Spring Boot 2.1.4.RELEASE
-* Continuous integration with TravisCI
+* BCrypt password encryption
+* **JWT (Json Web Token) Authentication**
 * PostgreSQL database
 * H2 to run tests
-* BCrypt password encryption
 * Flyway database versioning
 * Hikari JDBC connection pooling framework
 * Swagger and Swagger UI
-* JWT (Json Web Token) Authentication
 * EhCache
+* Continuous integration with TravisCI
 * Deploy to Heroku
 
 ## Installing
