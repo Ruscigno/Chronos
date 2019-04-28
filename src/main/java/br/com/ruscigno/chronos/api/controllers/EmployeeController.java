@@ -55,7 +55,7 @@ public class EmployeeController {
 		Response<EmployeeDto> response = new Response<EmployeeDto>();
 
 		Optional<Employee> employee = this.employeeService.buscarPorId(id);
-		if (employee.isEmpty()) {
+		if (!employee.isPresent()) {
 			result.addError(new ObjectError("funcionario", "Funcionário não encontrado."));
 		}
 		
