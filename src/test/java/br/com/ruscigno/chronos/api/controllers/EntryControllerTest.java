@@ -16,7 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-//import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -55,7 +55,7 @@ public class EntryControllerTest {
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	@Test
-//	@WithMockUser
+	@WithMockUser
 	public void testCadastrarLancamento() throws Exception {
 		Entry entry = obterDadosLancamento();
 		BDDMockito.given(this.employeeService.buscarPorId(Mockito.anyLong())).willReturn(Optional.of(new Employee()));
@@ -74,7 +74,7 @@ public class EntryControllerTest {
 	}
 	
 	@Test
-//	@WithMockUser
+	@WithMockUser
 	public void testCadastrarLancamentoFuncionarioIdInvalido() throws Exception {
 		BDDMockito.given(this.employeeService.buscarPorId(Mockito.anyLong())).willReturn(Optional.empty());
 
@@ -88,7 +88,7 @@ public class EntryControllerTest {
 	}
 	
 	@Test
-//	@WithMockUser(username = "admin@admin.com", roles = {"ADMIN"})
+	@WithMockUser(username = "admin@admin.com", roles = {"ADMIN"})
 	public void testRemoverLancamento() throws Exception {
 		BDDMockito.given(this.entryService.buscarPorId(Mockito.anyLong())).willReturn(Optional.of(new Entry()));
 
@@ -97,15 +97,15 @@ public class EntryControllerTest {
 				.andExpect(status().isOk());
 	}
 	
-//	@Test
-//	@WithMockUser
-//	public void testRemoverLancamentoAcessoNegado() throws Exception {
-//		BDDMockito.given(this.lancamentoService.buscarPorId(Mockito.anyLong())).willReturn(Optional.of(new Entry()));
-//
-//		mvc.perform(MockMvcRequestBuilders.delete(URL_BASE + ID_LANCAMENTO)
-//				.accept(MediaType.APPLICATION_JSON))
-//				.andExpect(status().isForbidden());
-//	}
+	@Test
+	@WithMockUser
+	public void testRemoverLancamentoAcessoNegado() throws Exception {
+		BDDMockito.given(this.entryService.buscarPorId(Mockito.anyLong())).willReturn(Optional.of(new Entry()));
+
+		mvc.perform(MockMvcRequestBuilders.delete(URL_BASE + ID_LANCAMENTO)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isForbidden());
+	}
 
 	private String obterJsonRequisicaoPost() throws JsonProcessingException {
 		EntryDto entryDto = new EntryDto();
