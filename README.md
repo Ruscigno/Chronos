@@ -2,6 +2,9 @@
 
 RESTfull API to show the power of Java and Spring Boot. Basically you can register companies, employees and manage a company’s time attendance.
 
+[![Build Status](https://travis-ci.org/Ruscigno/Chronos.svg?branch=master)](https://travis-ci.org/Ruscigno/Chronos)
+[![codecov](https://codecov.io/gh/Ruscigno/Chronos/branch/master/graph/badge.svg)](https://codecov.io/gh/Ruscigno/Chronos)
+
 ## Features
 
 * Spring Boot 2.1.4.RELEASE
