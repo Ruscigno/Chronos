@@ -30,6 +30,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService userDetailsService;
 
+	private static final String[] AUTH_WHITELIST = {
+
+		// -- swagger ui
+		"/auth/**", 
+		"/api/cadastrar-pj", 
+		"/api/cadastrar-pf", 
+		"/v2/api-docs",
+		"/swagger-resources/**", 
+		"/swagger-ui.html", 
+		"/v2/api-docs",
+		"/webjars/**",
+		"/configuration/security"
+};
+
 	@Autowired
 	public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
 		authenticationManagerBuilder.userDetailsService(this.userDetailsService).passwordEncoder(passwordEncoder());
@@ -49,8 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-				.antMatchers("/auth/**", "/api/cadastrar-pj", "/api/cadastrar-pf", "/v2/api-docs",
-						"/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**")
+				.antMatchers(AUTH_WHITELIST)
 				.permitAll().anyRequest().authenticated();
 		httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 		httpSecurity.headers().cacheControl();
