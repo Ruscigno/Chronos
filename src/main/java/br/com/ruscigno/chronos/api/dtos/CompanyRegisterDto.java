@@ -6,6 +6,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class CompanyRegisterDto {
 	
 	private Long id;
