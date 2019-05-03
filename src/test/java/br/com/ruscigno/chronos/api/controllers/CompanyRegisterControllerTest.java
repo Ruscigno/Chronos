@@ -53,18 +53,29 @@ public class CompanyRegisterControllerTest {
 	@WithMockUser
 	public void cadastrarTest() throws Exception {
 		BDDMockito.given(this.companyService.persistir(Mockito.any(Company.class))).willReturn(getCompanyData());
-		
-		mvc.perform(MockMvcRequestBuilders.post(URL_BASE)
-			.content(this.obterJsonRequisicaoPost())
-			.contentType(MediaType.APPLICATION_JSON)
-			.accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.data.razaoSocial").value(RAZAO_SOCIAL))
-			.andExpect(jsonPath("$.data.cnpj").value(CNPJ))
-			.andExpect(jsonPath("$.errors").isEmpty());
+
+		mvc.perform(MockMvcRequestBuilders.post(URL_BASE).content(this.obterJsonRequisicaoPost(false))
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk())
+				.andExpect(jsonPath("$.data.razaoSocial").value(RAZAO_SOCIAL))
+				.andExpect(jsonPath("$.data.cnpj").value(CNPJ))
+				.andExpect(jsonPath("$.errors").isEmpty());
 	}
 
-	private String obterJsonRequisicaoPost() throws JsonProcessingException {
+	@Test
+	@WithMockUser
+	public void cadastrarErrorTest() throws Exception {
+		BDDMockito.given(this.companyService.persistir(Mockito.any(Company.class))).willReturn(getCompanyData());
+
+		mvc.perform(MockMvcRequestBuilders.post(URL_BASE).content(this.obterJsonRequisicaoPost(true))
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().is4xxClientError())
+				.andExpect(jsonPath("$.errors").value("CNPJ inválido."));
+	}
+
+	private String obterJsonRequisicaoPost(boolean cnpjErro) throws JsonProcessingException {
 		CompanyRegisterDto companyDto = new CompanyRegisterDto();
 		companyDto.setId(ID);
 		companyDto.setNome(NOME);
@@ -72,12 +83,16 @@ public class CompanyRegisterControllerTest {
 		companyDto.setSenha(SENHA);
 		companyDto.setCpf(CPF);
 		companyDto.setRazaoSocial(RAZAO_SOCIAL);
-		companyDto.setCnpj(CNPJ);
-		
+		if (cnpjErro) {
+			companyDto.setCnpj(CNPJ + "1");
+		} else {
+			companyDto.setCnpj(CNPJ);
+		}
+
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.writeValueAsString(companyDto);
 	}
-	
+
 	private Company getCompanyData() {
 		Company company = new Company();
 		company.setId(ID);
